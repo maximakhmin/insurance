@@ -1,13 +1,16 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from .models import Policy
 from .serializer import PolicySerializer
+from insurance_auth.permissions import IsAdmin
 # Create your views here.
 
 
 class PolicyView(APIView):
+
+    permission_classes = [IsAdmin]
 
     def get(self, request):
         policies = Policy.objects
@@ -35,6 +38,7 @@ class PolicyView(APIView):
 
 class PolicyViewOne(APIView):
 
+    permission_classes = [IsAdmin]
     http_method_names = ['delete', 'get', 'put']
 
     def get(self, request, id):
@@ -81,8 +85,9 @@ class PolicyViewOne(APIView):
             return Response("Error")
 
         
-    
+
 @api_view(('GET',)) 
+@permission_classes([IsAdmin])
 def activatePolicy(request, id):
     try:
         policy = Policy.objects.get(id=id)
@@ -95,7 +100,10 @@ def activatePolicy(request, id):
         print(e)
         return Response("Error")
     
+
+
 @api_view(('GET',)) 
+@permission_classes([IsAdmin])
 def deactivatePolicy(request, id):
     try:
         policy = Policy.objects.get(id=id)

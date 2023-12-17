@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from .models import UserPolicy, Payment, Policy, User
 from insurance_policy.serializer import PolicySerializer
 from .serializer import UserPolicySerializer
+from rest_framework.decorators import api_view, permission_classes
+from insurance_auth.permissions import IsAuthenticated
 from .purchase import purchase, calculateCoef
 # Create your views here.
         
@@ -31,7 +33,9 @@ def getPropetry(request):
     serializer = PolicySerializer(policies, many=True)
     return Response(serializer.data)
 
-@api_view(('POST',)) 
+
+@api_view(('POST',))
+@permission_classes([IsAuthenticated]) 
 def calculateAuto(request, id):
     try:
         policy = Policy.objects.filter(type='auto').get(id=id)
@@ -55,7 +59,9 @@ def calculateAuto(request, id):
         print(e)
         return Response("Error")
 
+
 @api_view(('POST',)) 
+@permission_classes([IsAuthenticated])
 def buyAuto(request, id):
     try:
         purchase('auto', id, request)
@@ -70,7 +76,9 @@ def buyAuto(request, id):
         print(e)
         return Response("Error")
 
+
 @api_view(('POST',)) 
+@permission_classes([IsAuthenticated])
 def buyAccident(request, id):
     try:
         policy = Policy.objects.filter(type='accident').get(id=id)
@@ -92,6 +100,7 @@ def buyAccident(request, id):
 
 
 @api_view(('POST',)) 
+@permission_classes([IsAuthenticated])
 def buyPropetry(request, id):
     try:
         policy = Policy.objects.filter(type='property').get(id=id)
@@ -113,6 +122,7 @@ def buyPropetry(request, id):
     
 
 @api_view(('GET',)) 
+@permission_classes([IsAuthenticated])
 def getPolicies(request):
     userPolicies = UserPolicy.objects.filter(user=request.user)
     serializer = UserPolicySerializer(userPolicies, many=True)

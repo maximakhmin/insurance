@@ -1,15 +1,13 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
-# from .serializer import UserSerializer
 from django.contrib.auth import authenticate
 from .models import User
 from django.db.utils import IntegrityError
-from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import api_view, permission_classes
+from insurance_auth.permissions import IsAuthenticated
+
 # Create your views here.
-
-
 
 
 @api_view(('POST',)) 
@@ -35,7 +33,7 @@ def register(request):
     }
     try:
         if User.objects.create_user(data['email'], data['password']):
-            return Response(f'User created\nemail:{data["email"]}\npassword:{data["password"]}')
+            return Response(f'User created. Email:{data["email"]}/ Password:{data["password"]}')
         else:
             return Response('Enter email')
     except IntegrityError:
@@ -44,6 +42,7 @@ def register(request):
 
 
 @api_view(('GET',))
+@permission_classes([IsAuthenticated])
 def who(request):
 
     if (request.user):
