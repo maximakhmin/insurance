@@ -7,7 +7,7 @@ from insurance_policy.models import Policy
 class Payment(models.Model):
     
     id = models.AutoField(primary_key=True)
-    card = models.IntegerField()
+    card = models.CharField(max_length=(16))
     cvv = models.IntegerField()
     date = models.DateField()
 

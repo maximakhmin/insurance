@@ -7,6 +7,5 @@ from . import views
 urlpatterns = [
     path('login', views.login),         # permit all
     path('register', views.register),   # permit all
-    # path('refresh', views.refresh),
     path('who', views.who)              # permit all
 ]

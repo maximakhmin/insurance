@@ -38,7 +38,7 @@ def getPropetry(request):
 @permission_classes([IsAuthenticated]) 
 def calculateAuto(request, id):
     try:
-        policy = Policy.objects.filter(type='auto').get(id=id)
+        policy = Policy.objects.filter(type='auto', active=True).get(id=id)
 
         data = {
             'power': request.data.get('power'),
@@ -51,7 +51,7 @@ def calculateAuto(request, id):
         request.user.current_cost = cost
         request.user.save()
 
-        return Response(f'Cost of insurance: {cost}')
+        return Response(f'Cost of insurance: {int(cost)}')
         
     except Policy.DoesNotExist:
         return Response("No such id")
@@ -81,7 +81,7 @@ def buyAuto(request, id):
 @permission_classes([IsAuthenticated])
 def buyAccident(request, id):
     try:
-        policy = Policy.objects.filter(type='accident').get(id=id)
+        policy = Policy.objects.filter(type='accident', active=True).get(id=id)
 
         request.user.current_cost = policy.cost
         request.user.save()
@@ -103,7 +103,7 @@ def buyAccident(request, id):
 @permission_classes([IsAuthenticated])
 def buyPropetry(request, id):
     try:
-        policy = Policy.objects.filter(type='property').get(id=id)
+        policy = Policy.objects.filter(type='property', active=True).get(id=id)
 
         request.user.current_cost = policy.cost
         request.user.save()

@@ -83,8 +83,8 @@ DATABASES = {
         'NAME': 'insurance',
         'USER': 'user',
         'PASSWORD': 'pass',
-        'HOST': 'localhost',
-        'PORT': '1111',
+        'HOST': 'mysql',
+        'PORT': '3306',
     }
 }
 

@@ -66,7 +66,7 @@ def calculateCoef(data):
     ko = 1
     if (data['user_limit'])==True:
         ko = 2.22
-
+        
     return km*kbc*ko
     
 

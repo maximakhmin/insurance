@@ -33,7 +33,7 @@ def register(request):
     }
     try:
         if User.objects.create_user(data['email'], data['password']):
-            return Response(f'User created. Email:{data["email"]}/ Password:{data["password"]}')
+            return Response(f'User created. Email:{data["email"]} Password:{data["password"]}')
         else:
             return Response('Enter email')
     except IntegrityError:
@@ -45,8 +45,8 @@ def register(request):
 @permission_classes([IsAuthenticated])
 def who(request):
 
-    if (request.user):
-        return Response(request.user.email)
+    if (request.user.is_staff):
+        return Response("Admin")
     else:
-        return Response("Error with authorization")
+        return Response("User")
     
